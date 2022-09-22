@@ -1,0 +1,26 @@
+Index: superlu-dist/SRC/dHWPM_CombBLAS.hpp
+===================================================================
+--- superlu-dist.orig/SRC/dHWPM_CombBLAS.hpp	2020-05-29 19:11:30.600522149 +0800
++++ superlu-dist/SRC/dHWPM_CombBLAS.hpp	2020-05-29 19:11:52.704534728 +0800
+@@ -23,7 +23,7 @@
+ #define dHWPM_CombBLAS_h
+ 
+ #include "CombBLAS/CombBLAS.h"
+-#include "ApproxWeightPerfectMatching.h"
++#include "BipartiteMatchings/ApproxWeightPerfectMatching.h"
+ #include "superlu_ddefs.h"
+ 
+ 
+Index: superlu-dist/SRC/zHWPM_CombBLAS.hpp
+===================================================================
+--- superlu-dist.orig/SRC/zHWPM_CombBLAS.hpp	2020-05-29 19:11:30.600522149 +0800
++++ superlu-dist/SRC/zHWPM_CombBLAS.hpp	2020-05-29 19:12:01.960538882 +0800
+@@ -23,7 +23,7 @@
+ #define zHWPM_CombBLAS_h
+ 
+ #include "CombBLAS/CombBLAS.h"
+-#include "ApproxWeightPerfectMatching.h"
++#include "BipartiteMatchings/ApproxWeightPerfectMatching.h"
+ #include "superlu_zdefs.h"
+ 
+ 

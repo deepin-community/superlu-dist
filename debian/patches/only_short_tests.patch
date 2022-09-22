@@ -1,0 +1,16 @@
+Index: superlu-dist/TEST/CMakeLists.txt
+===================================================================
+--- superlu-dist.orig/TEST/CMakeLists.txt	2020-11-02 15:22:54.175342563 +0800
++++ superlu-dist/TEST/CMakeLists.txt	2020-11-02 15:23:57.311800307 +0800
+@@ -7,8 +7,9 @@
+ endif ()
+ 
+ set(MATRICES ../EXAMPLE/g20.rua)  # sample sparse matrix from a file
+-set(NPROWS 1 2 5)	  # process rows
+-set(NPCOLS 1 2 3) 	  # process columns
++# longer tests take 1000 sec or timeout, so don't run them
++set(NPROWS 1 2)		  # process rows
++set(NPCOLS 1 2) 	  # process columns
+ set(NVAL 9 19)	  	  # generated matrix dimensions
+ set(NRHS 1 3)		  # number of RHS
+ # set(FILLRATIO 2 10)	  # estimated fill ratio

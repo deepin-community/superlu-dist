@@ -1,0 +1,19 @@
+Index: superlu-dist/SRC/get_perm_c.c
+===================================================================
+--- superlu-dist.orig/SRC/get_perm_c.c
++++ superlu-dist/SRC/get_perm_c.c
+@@ -83,11 +83,11 @@ get_metis(
+ #else
+ 
+     /* Earlier version 3.x.x */
+-    /* METIS_NodeND(&nm, b_colptr, b_rowind, &numflag, metis_options,
+-       perm, iperm);*/
++    METIS_NodeND(&nm, b_colptr, b_rowind, &numflag, metis_options,
++       perm, iperm);
+ 
+     /* Latest version 4.x.x */
+-    METIS_NodeND(&nm, b_colptr, b_rowind, NULL, NULL, perm, iperm);
++    /* METIS_NodeND(&nm, b_colptr, b_rowind, NULL, NULL, perm, iperm); */
+ 
+     /*check_perm_dist("metis perm",  n, perm);*/
+ #endif

@@ -1,0 +1,92 @@
+Source: superlu-dist
+Priority: optional
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
+Uploaders: Drew Parsons <dparsons@debian.org>
+Build-Depends: debhelper-compat (= 13), dh-fortran-mod,
+	cmake (>= 2.8.12),
+	mpi-default-dev, mpi-default-bin,
+	gfortran,
+	libblas-dev | libopenblas-dev | libblis-dev | libatlas-base-dev | libblas.so,
+	liblapack-dev | libopenblas-dev | libatlas-base-dev | liblapack.so,
+	libcombblas-dev (>= 1.6.2-3),
+	libscotchparmetis-dev, libmetis-dev
+Standards-Version: 4.6.0
+Section: libs
+Homepage: https://github.com/xiaoyeli/superlu_dist
+Vcs-Git: https://salsa.debian.org/science-team/superlu-dist.git
+Vcs-Browser: https://salsa.debian.org/science-team/superlu-dist
+
+Package: libsuperlu-dist-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libsuperlu-dist7 (= ${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Highly distributed solution of sparse linear equations
+ SuperLU is a general purpose library for the direct solution of large,
+ sparse, nonsymmetric systems of linear equations. The library is
+ written in C and is callable from either C or Fortran program. It uses
+ MPI, OpenMP and CUDA to support various forms of parallelism. It
+ supports both real and complex datatypes, both single and double
+ precision, and 64-bit integer indexing. The library routines performs
+ an LU decomposition with partial pivoting and triangular system solves
+ through forward and back substitution. The LU factorization routines
+ can handle non-square matrices but the triangular solves are performed
+ only for square matrices. The matrix columns may be preordered (before
+ factorization) either through library or user supplied routines. This
+ preordering for sparsity is completely separate from the
+ factorization. Working precision iterative refinement subroutines are
+ provided for improved backward stability. Routines are also provided
+ to equilibrate the system, estimate the condition number, calculate
+ the relative backward error, and estimate error bounds for the refined
+ solutions.
+ .
+ SuperLU_DIST implements the algorithms for distributed memory,
+ targetting highly parallel distributed memory hybrid systems. The
+ numerical factorization routines are already implemented for hybrid
+ systems with multiple GPUs. Further work will be needed to implement
+ the other phases of the algorithms on the hybrid systems and to
+ enhance strong scaling to extreme scale.
+ .
+ The main library is libsuperlu_dist.so but a fortran wrapper library
+ is also provided as libsuperlu_dist_fortran.so
+ .
+ This package provides development files for building client
+ applications against superlu-dist.
+
+Package: libsuperlu-dist7
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Highly distributed solution of sparse linear equations
+ SuperLU is a general purpose library for the direct solution of large,
+ sparse, nonsymmetric systems of linear equations. The library is
+ written in C and is callable from either C or Fortran program. It uses
+ MPI, OpenMP and CUDA to support various forms of parallelism. It
+ supports both real and complex datatypes, both single and double
+ precision, and 64-bit integer indexing. The library routines performs
+ an LU decomposition with partial pivoting and triangular system solves
+ through forward and back substitution. The LU factorization routines
+ can handle non-square matrices but the triangular solves are performed
+ only for square matrices. The matrix columns may be preordered (before
+ factorization) either through library or user supplied routines. This
+ preordering for sparsity is completely separate from the
+ factorization. Working precision iterative refinement subroutines are
+ provided for improved backward stability. Routines are also provided
+ to equilibrate the system, estimate the condition number, calculate
+ the relative backward error, and estimate error bounds for the refined
+ solutions.
+ .
+ SuperLU_DIST implements the algorithms for distributed memory,
+ targetting highly parallel distributed memory hybrid systems. The
+ numerical factorization routines are already implemented for hybrid
+ systems with multiple GPUs. Further work will be needed to implement
+ the other phases of the algorithms on the hybrid systems and to
+ enhance strong scaling to extreme scale.
+ .
+ The main library is libsuperlu_dist.so but a fortran wrapper library
+ is also provided as libsuperlu_dist_fortran.so
+ .
+ This package provides the superlu-dist and superlu_dist_fortran
+ shared libraries.

@@ -1,0 +1,17 @@
+Row Permutations and Removal of MC64
+====================================
+
+The Debian superlu-dist package has removed MC64 support, since MC64
+is provided under a non-free HSL licence which does not permit
+redistribution.
+
+Upstream configured MC64 as the default algorithm for row permutations
+in SuperLU-Dist. We have changed the default in Debian to no row
+permutation algorithm (RowPerm=NOROWPERM) instead.
+
+Applications which explicitly select MC64 (RowPerm=LARGEDIAG_MC64)
+will halt at runtime with an error message stating that MC64 is not
+available.
+
+Alternatively you may select RowPerm=LargeDiag_AWPM (CombBLAS).
+Note that CombBLAS only supports square (n×n) matrices.

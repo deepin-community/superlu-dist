@@ -1,0 +1,15 @@
+export OMPI_MCA_plm_rsh_agent=/bin/false
+export OMPI_MCA_rmaps_base_oversubscribe=1
+
+# MPI is typically more efficient with 1 thread per process
+export OMP_NUM_THREADS=1
+
+DEB_HOST_MULTIARCH=$(dpkg-architecture -qDEB_HOST_MULTIARCH)
+TESTDIR=/usr/lib/${DEB_HOST_MULTIARCH}/superlu-dist/tests
+
+cp -r ${TESTDIR} superlu-dist-tests
+cd superlu-dist-tests
+
+# -j1: tests are already parallelised with MPI,
+# so run one at a time
+ctest --force-new-ctest-process -j1 --verbose

@@ -1,0 +1,84 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#export DH_VERBOSE = 1
+
+export DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+# see FEATURE AREAS in dpkg-buildflags(1)
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+# see ENVIRONMENT in dpkg-buildflags(1)
+# package maintainers to append CFLAGS
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+# package maintainers to append LDFLAGS
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+
+# ignore test errors for some arches:
+#   x32 times out in some tests
+#   ia64 times out or fails some tests
+ARCH_IGNORE_TEST_ERROR = ia64 x32
+
+empty :=
+space := $(empty)$(empty)
+
+# ignore test errors, or not
+IGNORE_TEST_ERROR=/bin/false
+ifneq (,$(findstring $(space)$(DEB_HOST_ARCH)$(space), $(space)$(ARCH_IGNORE_TEST_ERROR)$(space)))
+  IGNORE_TEST_ERROR=/bin/true
+endif
+
+
+# Allow test programs that use OpenMPI to run
+export OMPI_MCA_plm_rsh_agent=/bin/false
+export OMPI_MCA_rmaps_base_oversubscribe=1
+
+export BUILDDIR = obj-$(DEB_HOST_GNU_TYPE)
+
+%:
+	dh $@ --buildsystem=cmake --with fortran_mod
+
+
+# NOTE: the superlu-dist cmake scripts generate a configuration error:
+#   CMake Error in SRC/CMakeLists.txt:
+#    Found relative path while evaluating include directories of "superlu_dist":
+#      "OFF"
+# with error code 1, which causes the build to halt.
+# But the configuration seems fine (GNUInstallDirs are used to define standard install dirs).
+# For now, work around the error by ignoring it (append "|| /bin/true")
+override_dh_auto_configure:
+	dh_auto_configure -- \
+	    -DBUILD_SHARED_LIBS=ON -DCMAKE_SKIP_RPATH=ON \
+	    -DCMAKE_C_COMPILER=mpicc \
+	    -DCMAKE_CXX_COMPILER=mpic++ \
+	    -DXSDK_ENABLE_Fortran=ON \
+	    -DCMAKE_FORTRAN_COMPILER=mpifort \
+	    -DMPIEXEC_PREFLAGS=--allow-run-as-root \
+	    -DCMAKE_INSTALL_INCLUDEDIR=include/superlu-dist \
+	    -Denable_complex16=ON \
+	    -DTPL_ENABLE_INTERNAL_BLASLIB=OFF -DTPL_BLAS_LIBRARIES=/usr/lib/$(DEB_HOST_MULTIARCH)/libblas.so \
+	    -DTPL_ENABLE_LAPACKLIB=ON -DTPL_LAPACK_LIBRARIES=/usr/lib/$(DEB_HOST_MULTIARCH)/liblapack.so \
+	    -DTPL_ENABLE_PARMETISLIB=ON \
+	      -DTPL_PARMETIS_LIBRARIES="-lparmetis -lmetis" \
+	      -DTPL_PARMETIS_INCLUDE_DIRS="/usr/include/parmetis" \
+	    -DTPL_ENABLE_COMBBLASLIB=ON \
+	      -DTPL_COMBBLAS_LIBRARIES="-lCombBLAS -lGraphGenlib -lUsortlib" \
+	      -DTPL_COMBBLAS_INCLUDE_DIRS=/usr/include/CombBLAS/ \
+	  || /bin/true
+
+
+# set LD_LIBRARY_PATH to test against the libsuperlu_dist.so just built
+override_dh_auto_test:
+	export LD_LIBRARY_PATH=$(CURDIR)/$(BUILDDIR)/SRC:$${LD_LIBRARY_PATH}; \
+	OMP_NUM_THREADS=1 LD_LIBRARY_PATH=$${LD_LIBRARY_PATH} dh_auto_test --max-parallel=1 || $(IGNORE_TEST_ERROR)
+
+override_dh_install:
+	dh_install
+	for testfile in $$( find debian/libsuperlu-dist-dev -name CTestTestfile.cmake ); do \
+	    sed -e "s|$(CURDIR)|<<builddir>>/superlu-dist|g;" \
+		-i $$testfile; \
+	    sed -r "s|(.*)\".*/(EXAMPLE/.*ua)|\1\"/usr/lib/$(DEB_HOST_MULTIARCH)/superlu-dist/tests/\2|" \
+		-i $$testfile; \
+	done

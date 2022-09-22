@@ -1,0 +1,8 @@
+mc64ad_dist-stub.patch
+rowperm_default_NOROWPERM_not_MC64.patch
+#scotch_metis_v3.patch
+only_short_tests.patch
+build_with_combblas.patch
+build_cxx14.patch
+skip_rpath.patch
+test_local_exe.patch

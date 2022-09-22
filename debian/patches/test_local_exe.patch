@@ -1,0 +1,26 @@
+Index: superlu-dist/EXAMPLE/CMakeLists.txt
+===================================================================
+--- superlu-dist.orig/EXAMPLE/CMakeLists.txt	2021-05-19 18:21:19.720808697 +0200
++++ superlu-dist/EXAMPLE/CMakeLists.txt	2021-05-24 18:54:24.966225703 +0200
+@@ -11,7 +11,7 @@
+     set(EXAMPLE_OUTPUT "${SuperLU_DIST_BINARY_DIR}/EXAMPLE/${target}.out")
+ 
+ ##  get_target_property(TEST_LOC ${target} LOCATION)
+-    set(EXAMPLE_LOC ${CMAKE_CURRENT_BINARY_DIR})
++    set(EXAMPLE_LOC ".")
+ 
+     MATH( EXPR procs "${nprow}*${npcol}" )
+ #    message("MPIEXEC_FLAG is ${MPIEXEC_NUMPROC_FLAG}")
+Index: superlu-dist/TEST/CMakeLists.txt
+===================================================================
+--- superlu-dist.orig/TEST/CMakeLists.txt	2021-05-24 18:52:01.344254719 +0200
++++ superlu-dist/TEST/CMakeLists.txt	2021-05-24 18:53:22.617370065 +0200
+@@ -34,7 +34,7 @@
+   # file(WRITE ${TEST_OUTPUT} "")
+ 
+ ##  get_target_property(TEST_LOC ${target} LOCATION)
+-   set(TEST_LOC ${CMAKE_CURRENT_BINARY_DIR})
++   set(TEST_LOC ".")
+ 
+    foreach (r ${NPROWS})
+       foreach (c ${NPCOLS})

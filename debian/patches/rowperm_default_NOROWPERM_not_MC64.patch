@@ -1,0 +1,13 @@
+Index: superlu-dist/SRC/util.c
+===================================================================
+--- superlu-dist.orig/SRC/util.c	2021-10-06 17:19:19.631925298 +0200
++++ superlu-dist/SRC/util.c	2021-10-06 17:19:19.631925298 +0200
+@@ -205,7 +205,7 @@
+ #else
+     options->ColPerm = MMD_AT_PLUS_A;
+ #endif
+-    options->RowPerm = LargeDiag_MC64;
++    options->RowPerm = NOROWPERM;
+     options->ReplaceTinyPivot = NO;
+     options->IterRefine = SLU_DOUBLE;
+     options->Trans = NOTRANS;

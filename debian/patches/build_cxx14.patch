@@ -1,0 +1,15 @@
+Index: superlu-dist/CMakeLists.txt
+===================================================================
+--- superlu-dist.orig/CMakeLists.txt	2021-10-06 17:19:31.288058185 +0200
++++ superlu-dist/CMakeLists.txt	2021-10-06 17:19:31.280058094 +0200
+@@ -59,8 +59,8 @@
+ # Usual initialization stuff
+ #
+ ######################################################################
+-set(CMAKE_CXX_STANDARD 11)
+-#set(CMAKE_CXX_STANDARD 14)
++#set(CMAKE_CXX_STANDARD 11)
++set(CMAKE_CXX_STANDARD 14)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ 
+ #message("!!!! top: cxx_implicit='${CMAKE_CXX_IMPLICIT_LINK_LIBRARIES}'")

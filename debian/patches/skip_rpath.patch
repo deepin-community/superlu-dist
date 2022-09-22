@@ -1,0 +1,26 @@
+Index: superlu-dist/CMakeLists.txt
+===================================================================
+--- superlu-dist.orig/CMakeLists.txt	2021-10-06 17:19:37.920133290 +0200
++++ superlu-dist/CMakeLists.txt	2021-10-06 17:19:37.920133290 +0200
+@@ -99,8 +99,8 @@
+   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+ 
+   set(PROJECT_NAME_LIB_EXPORT libsuperlu_dist.so)
+-  SET(CMAKE_EXE_LINKER_FLAGS
+-      "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,${CMAKE_INSTALL_PREFIX}/SRC")
++#  SET(CMAKE_EXE_LINKER_FLAGS
++#      "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,${CMAKE_INSTALL_PREFIX}/SRC")
+ 
+   if (BUILD_STATIC_LIBS)
+     message("-- SuperLU_DIST will also be built as a static library.")
+@@ -353,8 +353,8 @@
+    if (BUILD_SHARED_LIBS)
+       message("-- superlu_dist_fortran will be built as a dynamic library.")
+       set(PROJECT_NAME_LIB_FORTRAN libsuperlu_dist_fortran.so)
+-      SET(CMAKE_EXE_LINKER_FLAGS
+-          "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
++#      SET(CMAKE_EXE_LINKER_FLAGS
++#          "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    else()
+       message("-- superlu_dist_fortranwill be built as a static library.")
+       set(PROJECT_NAME_LIB_FORTRAN libsuperlu_dist_fortran.a)

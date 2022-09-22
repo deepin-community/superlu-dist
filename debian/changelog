@@ -1,0 +1,280 @@
+superlu-dist (7.1.0+dfsg1-2) unstable; urgency=medium
+
+  * upload SuperLU-Dist 7.1 to unstable
+
+ -- Drew Parsons <dparsons@debian.org>  Sat, 16 Oct 2021 00:17:22 +0200
+
+superlu-dist (7.1.0+dfsg1-1exp1) experimental; urgency=medium
+
+  * New upstream release.
+    - applies debian patches fortran_shared_lib_soname.patch
+      example_big.rua_6.4.patch, combblas_use_HWPM.patch
+  * skip installation of fortran test programs in libsuperlu-dist-dev.
+    The fortran test build was deactivated in upstream commit 6fc6429
+    and currently fails to build (upstream Issue #85)
+
+ -- Drew Parsons <dparsons@debian.org>  Wed, 06 Oct 2021 18:21:32 +0200
+
+superlu-dist (7.0.0+dfsg1-1exp3) experimental; urgency=medium
+
+  * acknowledge all copyright holders in debian/copyright
+    - main code: Xiaoye Sherry Li, University of California and
+      Lawrence Berkeley National Laboratory (BSD-3)
+    - symbfact.c, Xerox Corporation, University of California (BSD-3)
+    - wingetopt.*: Microsoft (Apache-2.0)
+    - cub: Duane Merrill, NVIDIA CORPORATION (BSD-3)
+    - *colamd.*: University of Florida, University of California (BSD-3)
+  * Standards-Version: 4.6.0
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 14 Sep 2021 01:42:23 +0200
+
+superlu-dist (7.0.0+dfsg1-1exp2) experimental; urgency=medium
+
+  * build with Parmetis support (provided via Scotch emulation since
+    Parmetis is non-free)
+    - Build-Depends: libscotchparmetis-dev, libmetis-dev
+  * register fortran mod files with dh --with fortran_mod
+    - Build-Depends: dh-fortran-mod
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 25 May 2021 03:14:45 +0200
+
+superlu-dist (7.0.0+dfsg1-1exp1) experimental; urgency=medium
+
+  * New upstream major release.
+    - drop debian patch soname_6.4.patch, assert ABI compatibility
+      across the v7 series (libsuperlu-dist7)
+  * provide libsuperlu_dist_fortran.so (Fortran wrapper)
+    - configure with -DXSDK_ENABLE_Fortran=ON to activate Fortran
+      support, including use of underscore with BLAS symbols
+      (CMake FortranCInterface)
+    - provide fortran test programs in libsuperlu-dist-dev
+  * Build with complex number support (enable_complex16=ON)
+  * Build with lapack support.
+    - Build-Depends: liblapack-dev | libopenblas-dev |
+      libatlas-base-dev | liblapack.so
+  * Add libblis-dev alternative to Build-Depends: libblas-dev
+  * add debian patches
+    - combblas_use_HWPM.patch fixes build with CombBLAS
+      (uses HWPM not AWPM). This is upstream commit 4d43154.
+    - example_big.rua_6.4.patch reinstates EXAMPLE/big.rua,
+      removed from 7.0.0 tarball but used by tests
+    - fortran_shared_lib_soname.patch fixes install path of fortran
+      shared library, links to main library and adds soversion
+    - test_local_exe.patch configures tests as local executables (./)
+  * run tests with OMP_NUM_THREADS=1
+    (MPI is typically more efficient with 1 thread per process)
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 24 May 2021 19:22:32 +0200
+
+superlu-dist (6.4.0+dfsg1-1exp2) experimental; urgency=medium
+
+  * provide library as libsuperlu-dist6.4 (ABI bump to 6.4)
+  * debian patch soname_6.4.patch sets soname to 6.4 rather than 6.
+    Upstream sets it to VERSION_MAJOR (i.e. 6), but a strong API
+    change was made in SuperLU-Dist 6.3 to enable simultaneous real
+    and complex number data structures (e.g. splitting LUstruct_t ->
+    dLUstruct_t, zLUstruct_t). v6.3.1 also updated the interface to
+    CombBLAS. Hence commence new ABI at 6.4 rather than 6.3.
+    The future version 6.5 might be ABI compatible with 6.4.
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 12 Jan 2021 05:10:23 +1100
+
+superlu-dist (6.4.0+dfsg1-1exp1) experimental; urgency=medium
+
+  * New upstream release.
+  * Standards-Version: 4.5.1
+  * debhelper compatibility level 13
+  * add debian patches
+    - build_cxx14.patch enables build with -std=c++14
+      (needed to handle auto pointers in combblas)
+    - skip_rpath.patch switches off manual rpath in cmake
+  * libsuperlu-dist-dev: install static library libsuperlu_dist.a
+  * debian/tests: run ctest --verbose to catch error messages
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 11 Jan 2021 20:22:41 +1100
+
+superlu-dist (6.2.0+dfsg1-3) unstable; urgency=medium
+
+  * replace all instances of CURDIR in test scripts to get
+    reproducible builds. Thanks Chris Lamb. Closes: #945576.
+
+ -- Drew Parsons <dparsons@debian.org>  Sat, 30 Nov 2019 14:37:05 +0800
+
+superlu-dist (6.2.0+dfsg1-2) unstable; urgency=medium
+
+  * release to unstable
+
+ -- Drew Parsons <dparsons@debian.org>  Sat, 23 Nov 2019 12:45:12 +0800
+
+superlu-dist (6.2.0+dfsg1-1exp1) experimental; urgency=medium
+
+  * New upstream release.
+    - applies debian patch pkgconfig_dist.patch
+  * set ARCH_IGNORE_TEST_ERROR to ignore build-time test errors on
+    ia64 and x32. Don't ignore failure on other arches.
+  * Standards-Version: 4.4.1
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 18 Nov 2019 15:15:17 +0800
+
+superlu-dist (6.1.1+dfsg1-2) unstable; urgency=medium
+
+  * update debian/watch and Homepage to
+    https://github.com/xiaoyeli/superlu_dist
+  * Support reproducible builds by separating sed -e from sed -r when
+    processing Test files. Thanks Chris Lamb. Closes: #933838.
+  * debian patch pkgconfig_dist.patch fixes library reference in
+    superlu_dist.pc (-lsuperlu_dist not -lsuperlu)
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 06 Aug 2019 13:36:22 +0800
+
+superlu-dist (6.1.1+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Standards-Version: 4.3.0
+  * debhelper compatibility level 12
+
+ -- Drew Parsons <dparsons@debian.org>  Sun, 10 Feb 2019 11:48:14 +1100
+
+superlu-dist (6.1.0+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Refresh patches and update build_with_combblas.patch to remove explicit
+    flag -std=c++11 (std already updated to c++14 by CMAKE_CXX_STANDARD)
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 11 Dec 2018 13:49:38 +0800
+
+superlu-dist (6.0.0+dfsg1-3) unstable; urgency=medium
+
+  * Build with CombBLAS support
+    - Build-Depends: libcombblas-dev
+    - debian patch build_with_combblas.patch:
+      * applied C++14 standard (needed by CombBLAS)
+      * indicate path to BipartiteMatchings header files
+    - activate by setting RowPerm=LargeDiag_AWPM (square matrices only)
+
+ -- Drew Parsons <dparsons@debian.org>  Sat, 24 Nov 2018 23:19:00 +0800
+
+superlu-dist (6.0.0+dfsg1-2) unstable; urgency=medium
+
+  * disable ParMETIS support
+    - true ParMETIS is not available (nonfree), but SCOTCH's emulation
+      triggers a segfault in sp_colorder.c:163 since SCOTCH fails to
+      update perm_c (permtab/peritab in
+      library_graph_order.c:SCOTCH_graphOrderComputeList)
+
+ -- Drew Parsons <dparsons@debian.org>  Sat, 20 Oct 2018 19:15:25 +0800
+
+superlu-dist (6.0.0+dfsg1-1exp2) experimental; urgency=medium
+
+  * merge default row permutations (NOROWPERM) and refresh
+    only_short_tests.patch from 5.4.0+dfsg1-2..5.
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 15 Oct 2018 13:58:42 +0800
+
+superlu-dist (6.0.0+dfsg1-1exp1) experimental; urgency=medium
+
+  * New upstream version
+    - new ABI version 6
+    - improved strong scaling of the triangular solve
+    - now includes C++ code (build with mpic++)
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 01 Oct 2018 13:01:38 +0800
+
+superlu-dist (5.4.0+dfsg1-5) unstable; urgency=medium
+
+  * propagate use of DEB_HOST_GNU_TYPE consistently throughout rules
+
+ -- Drew Parsons <dparsons@debian.org>  Wed, 10 Oct 2018 02:01:14 +0800
+
+superlu-dist (5.4.0+dfsg1-4) unstable; urgency=medium
+
+  * build dir is DEB_HOST_GNU_TYPE not DEB_BUILD_MULTIARCH
+    (see /usr/share/perl5/Debian/Debhelper/Buildsystem.pm)
+
+ -- Drew Parsons <dparsons@debian.org>  Wed, 10 Oct 2018 00:03:03 +0800
+
+superlu-dist (5.4.0+dfsg1-3) unstable; urgency=medium
+
+  * use DEB_BUILD_MULTIARCH to determine build dir
+  * set OMPI_MCA_rmaps_base_oversubscribe=1 to enable tests to run on
+    smaller build systems
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 09 Oct 2018 20:46:33 +0800
+
+superlu-dist (5.4.0+dfsg1-2) unstable; urgency=medium
+
+  * new Debian patches:
+    - rowperm_default_NOROWPERM_not_MC64.patch: set default row
+      permutation algorithm to NOROWPERM since MC64 is not available.
+      MC64 has been removed since it uses code under a non-free HSL
+      licence which does not permit redistribution. Document in
+      README.Debian.
+    - scotch_metis_v3.patch: use METIS v3 interface (non-NULL
+      options). The METIS interface is handled by SCOTCH, which
+      segfaults if NULL is sent to METIS_NodeND.
+    - only_short_tests.patch: only run tests up to 2 rows or columns.
+      Longer tests take 1000 sec or timeout, so drop them.
+  * mark packages Multi-Arch: same
+  * set MPIEXEC_PREFLAGS=--allow-run-as-root to allow build-time tests
+    with fakeroot
+  * run one built-time test at a time (tests themselves are MPI parallel,
+    processors will get overloaded and tests will time out if multiple
+    tests are run)
+  * libsuperlu-dist-dev: install test files to
+    /usr/lib/${DEB_HOST_MULTIARCH}/superlu-dist/tests
+  * include debian/tests to run tests with autopkgtest
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 08 Oct 2018 19:47:07 +0800
+
+superlu-dist (5.4.0+dfsg1-1) unstable; urgency=medium
+
+  * New upstream version.
+    - provides LargeDiag_AWPM as an alternative row permutation
+      LargeDiag to LargeDiag_MC64
+  * Standards-Version: 4.2.1
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 01 Oct 2018 11:58:33 +0800
+
+superlu-dist (5.3.0+dfsg1-1) unstable; urgency=medium
+
+  * New upstream version.
+  * debian patch mc64ad_dist-stub.patch: Identify SuperLU-Dist in
+    "mc64 unsupported" error message.
+  * Standards-Version: 4.1.3
+  * debhelper compatibility level 11
+
+ -- Drew Parsons <dparsons@debian.org>  Sat, 10 Feb 2018 12:25:13 +0800
+
+superlu-dist (5.2.2+dfsg1-3) unstable; urgency=medium
+
+  * Team upload.
+  * Activate "Parmetis" support via Scotch emulation.
+  * Build-Depends: mpi-default-bin, to provide mpiexec for build tests.
+  * debian/rules: deactivate OMPI_MCA_plm_rsh_agent to allow OpenMPI
+    build-time tests to run.
+
+ -- Drew Parsons <dparsons@debian.org>  Fri, 17 Nov 2017 15:38:18 +0800
+
+superlu-dist (5.2.2+dfsg1-2) unstable; urgency=medium
+
+  * Team upload.
+  * Set generic libblas-dev as first Build-Dep alternative, since
+    Debian buildds don't use Build-Depends alternatives (and
+    OpenBLAS/ATLAS aren't built on all arches).
+    Will still use the system's preferred BLAS at runtime.
+
+ -- Drew Parsons <dparsons@debian.org>  Wed, 15 Nov 2017 23:55:56 +0800
+
+superlu-dist (5.2.2+dfsg1-1) unstable; urgency=medium
+
+  * Team upload.
+  * Initial release (Closes: #735679).
+    - debian patch mc64ad_dist-stub.patch provides stubs for
+      mc64ad_dist.c (removed, since non-free)
+  * Parmetis/Metis (non-free) are not supported in this build
+  * configuration errors are currently ignored to work around spurious
+    warnings about install dirs.
+  * build-time test are treated as information only
+    (build is not halted when tests fail)
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 14 Nov 2017 19:49:41 +0800

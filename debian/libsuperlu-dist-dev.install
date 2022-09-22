@@ -1,0 +1,32 @@
+#!/bin/sh
+echo 'usr/include/superlu-dist/*'
+echo 'usr/lib/*/lib*.so'
+echo 'usr/lib/*/libsuperlu_dist.a'
+echo 'usr/lib/*/pkgconfig/*'
+
+
+# install tests from the EXAMPLE and TEST subdirs
+TESTDIR=usr/lib/${DEB_HOST_MULTIARCH}/superlu-dist/tests
+
+echo "${BUILDDIR}/CTestTestfile.cmake ${TESTDIR}"
+for f in README *.rua *.cua ; do
+  echo "EXAMPLE/$f ${TESTDIR}/EXAMPLE"
+done
+for f in CTestTestfile.cmake p*drive* ; do
+  echo "${BUILDDIR}/EXAMPLE/$f ${TESTDIR}/EXAMPLE"
+done
+
+for f in README; do
+  echo "TEST/$f ${TESTDIR}/TEST"
+done
+for f in CTestTestfile.cmake p*test* ; do
+  echo "${BUILDDIR}/TEST/$f ${TESTDIR}/TEST"
+done
+
+# the fortran test build was deactivated in upstream commit 6fc6429
+# and currently fails to build (see upstream Issue#85)
+# Hence skip installation for fortran tests until that is resolved.
+#
+#for f in f_* ; do
+#  echo "${BUILDDIR}/FORTRAN/$f ${TESTDIR}/FORTRAN"
+#done
