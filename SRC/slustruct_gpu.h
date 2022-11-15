@@ -4,10 +4,12 @@
  * \brief Descriptions and declarations for structures used in GPU
  *
  * <pre>
- * -- Distributed SuperLU routine (version 7.0) --
+ * -- Distributed SuperLU routine (version 7.2) --
  * Lawrence Berkeley National Lab, Univ. of California Berkeley,
  * Georgia Institute of Technology, Oak Ridge National Laboratory
  * March 14, 2021 version 7.0.0
+ *
+ * Last update: December 12, 2021  v7.2.0
  * </pre>
  */
 
@@ -140,7 +142,7 @@ typedef struct //sluGPU_t_
     cublasHandle_t cublasHandles[MAX_NCUDA_STREAMS];
     int_t lastOffloadStream[MAX_NCUDA_STREAMS];
     int_t nCudaStreams;
-    int_t* isNodeInMyGrid;
+    int* isNodeInMyGrid;
     double acc_async_cost;
 } ssluGPU_t;
 
@@ -213,7 +215,7 @@ int sSchurCompUpdate_GPU(
 );
 
 
-extern void sCopyLUToGPU3D (int_t* isNodeInMyGrid, sLocalLU_t *A_host,
+extern void sCopyLUToGPU3D (int* isNodeInMyGrid, sLocalLU_t *A_host,
            ssluGPU_t *sluGPU, Glu_persist_t *Glu_persist, int_t n,
 	   gridinfo3d_t *grid3d, int_t buffer_size, int_t bigu_size, int_t ldt);
 

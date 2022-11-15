@@ -205,8 +205,15 @@ int main(int argc, char *argv[])
     pzgssvx(&options, &A, &ScalePermstruct, b, ldb, nrhs, &grid,
             &LUstruct, &SOLVEstruct, berr, &stat, &info);
 
-    /* Check the accuracy of the solution. */
-    pzinf_norm_error(iam, m_loc, nrhs, b, ldb, xtrue, ldx, grid.comm);
+    if ( info ) {  /* Something is wrong */
+        if ( iam==0 ) {
+	    printf("ERROR: INFO = %d returned from pzgssvx()\n", info);
+	    fflush(stdout);
+	}
+    } else {
+        /* Check the accuracy of the solution. */
+        pzinf_norm_error(iam, m_loc, nrhs, b, ldb, xtrue, ldx, grid.comm);
+    }
     
     PStatPrint(&options, &stat, &grid);        /* Print the statistics. */
     PStatFree(&stat);
@@ -242,10 +249,17 @@ int main(int argc, char *argv[])
     pzgssvx(&options, &A, &ScalePermstruct, b1, ldb, nrhs, &grid,
             &LUstruct, &SOLVEstruct, berr, &stat, &info);
 
-    /* Check the accuracy of the solution. */
-    if ( !iam )
-        printf("Solve a system with the same pattern and similar values.\n");
-    pzinf_norm_error(iam, m_loc, nrhs, b1, ldb, xtrue, ldx, grid.comm);
+    if ( info ) {  /* Something is wrong */
+        if ( iam==0 ) {
+	    printf("ERROR: INFO = %d returned from pzgssvx()\n", info);
+	    fflush(stdout);
+	}
+    } else {
+        /* Check the accuracy of the solution. */
+        if ( !iam )
+            printf("Solve a system with the same pattern and similar values.\n");
+        pzinf_norm_error(iam, m_loc, nrhs, b1, ldb, xtrue, ldx, grid.comm);
+    }
 
     /* Print the statistics. */
     PStatPrint(&options, &stat, &grid);
