@@ -13,13 +13,14 @@ at the top-level directory.
  * \brief Performs panel LU factorization.
  *
  * <pre>
- * -- Distributed SuperLU routine (version 7.0) --
+ * -- Distributed SuperLU routine (version 7.2) --
  * Lawrence Berkeley National Lab, Univ. of California Berkeley.
  * August 15, 2014
  *
  * Modified:
  *   September 30, 2017
- *   May 10, 2019 version 7.0.0
+ *   May 10, 2019  v7.0.0
+ *   December 12, 2021  v7.2.0
  *
  * <pre>
  * Purpose
@@ -398,7 +399,24 @@ int_t LpanelUpdate(int off0,  int nsupc, doublecomplex* ublk_ptr, int ld_ujrow,
 
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
-/*factorizes the diagonal block; called from process that owns the (k,k) block*/
+/************************************************************************/
+/*! \brief
+ *
+ * <pre>
+ * Purpose
+ * =======
+ *   Factorize the diagonal block; called from process that owns the (k,k) block
+ *
+ * Arguments
+ * =========
+ * 
+ * info   (output) int*
+ *        = 0: successful exit
+ *        > 0: if info = i, U(i,i) is exactly zero. The factorization has
+ *             been completed, but the factor U is exactly singular,
+ *             and division by zero will occur if it is used to solve a
+ *             system of equations.
+ */
 void Local_Zgstrf2(superlu_dist_options_t *options, int_t k, double thresh,
                    doublecomplex *BlockUFactor, /*factored U is overwritten here*/
                    Glu_persist_t *Glu_persist, gridinfo_t *grid, zLocalLU_t *Llu,
@@ -492,7 +510,7 @@ void Local_Zgstrf2(superlu_dist_options_t *options, int_t k, double thresh,
 
     //int_t thread_id = omp_get_thread_num();
     // SCT->Local_Dgstrf2_Thread_tl[thread_id * CACHE_LINE_SIZE] += (double) ( SuperLU_timer_() - t1);
-}
+} /* end Local_Zgstrf2 */
 
 #pragma GCC pop_options
 /************************************************************************/

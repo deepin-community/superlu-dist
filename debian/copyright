@@ -36,11 +36,6 @@ Comment:
  Obtained from
  https://github.com/iotivity/iotivity/tree/master/resource/c_common/windows
 
-Files: SRC/cub/*
-Copyright: 2011, Duane Merrill
-	   2011-2014, NVIDIA CORPORATION
-License: BSD-3-clause
-
 License: BSD-3-clause
  All rights reserved.
  .

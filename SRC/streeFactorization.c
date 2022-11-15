@@ -14,11 +14,14 @@ at the top-level directory.
  * \brief Factorization routines for the subtree using 2D process grid.
  *
  * <pre>
- * -- Distributed SuperLU routine (version 7.0) --
+ * -- Distributed SuperLU routine (version 7.2) --
  * Lawrence Berkeley National Lab, Georgia Institute of Technology,
  * Oak Ridge National Lab
  * May 12, 2021
+ *
+ * Last update: December 12, 2021  v7.2.0
  */
+ 
 #include "superlu_sdefs.h"
 #if 0
 #include "treeFactorization.h"
@@ -315,6 +318,9 @@ int_t ssparseTreeFactor_ASYNC(
         return 1;
     }
 
+    /* Test the input parameters. */
+    *info = 0;
+    
 #if ( DEBUGlevel>=1 )
     CHECK_MALLOC (grid3d->iam, "Enter ssparseTreeFactor_ASYNC()");
 #endif

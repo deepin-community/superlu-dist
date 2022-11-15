@@ -1,3 +1,22 @@
+superlu-dist (7.2.0+dfsg1-2) unstable; urgency=medium
+
+  * upload v7.2 to unstable
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 21 Dec 2021 15:34:42 +0100
+
+superlu-dist (7.2.0+dfsg1-1exp1) experimental; urgency=medium
+
+  * New upstream release.
+    - drops SRC/cub
+  * use debian/not-installed to ignore pddrive* installed by upstream
+    commit 302139e to usr/bin. No need for it there, we have it
+    available in <libdir>/superlu-dist/tests/EXAMPLE/. See upstream
+    Issue #91 for further discussion.
+  * remove generated make.inc and superlu_dist_config.*h header files
+    in clean rule
+
+ -- Drew Parsons <dparsons@debian.org>  Thu, 16 Dec 2021 13:32:45 +0100
+
 superlu-dist (7.1.0+dfsg1-2) unstable; urgency=medium
 
   * upload SuperLU-Dist 7.1 to unstable

@@ -40,6 +40,9 @@ export BUILDDIR = obj-$(DEB_HOST_GNU_TYPE)
 %:
 	dh $@ --buildsystem=cmake --with fortran_mod
 
+override_dh_clean:
+	dh_clean
+	rm -f make.inc FORTRAN/superlu_dist_config.fh SRC/superlu_dist_config.h
 
 # NOTE: the superlu-dist cmake scripts generate a configuration error:
 #   CMake Error in SRC/CMakeLists.txt:

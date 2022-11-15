@@ -638,6 +638,7 @@ extern int superlu_ztrsv(char *uplo, char *trans, char *diag,
                   int n, doublecomplex *a, int lda, doublecomplex *x, int incx);
 
 #ifdef SLU_HAVE_LAPACK
+// LAPACK routine
 extern void ztrtri_(char*, char*, int*, doublecomplex*, int*, int*);
 #endif
 
